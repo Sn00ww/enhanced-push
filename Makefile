@@ -22,6 +22,8 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@ mkdir -p $(BUILDDIR)
 	@ echo "$(CC) $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $<"; $(CC) $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
 
+all: $(TARGET)
+
 clean:
 	@ echo "\033[1;32mCleaning project...\033[0m"
 	@ echo "$(RM) -r $(BUILDDIR) $(TARGET) $(BINDIR)"; $(RM) -r $(BUILDDIR) $(TARGET) $(BINDIR)
