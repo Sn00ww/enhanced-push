@@ -63,3 +63,8 @@ dkms.conf
 
 # Intellij
 .idea/
+
+build
+lib/*
+bin/*
+.DS_Store
