@@ -4,7 +4,7 @@
 void printHelp(char *command)
 {
     std::cout << "Usage:" << std::endl;
-    std::cout << command << "[-a] [-p] [-t <name> <message>] -m <message> | -P" << std::endl;
+    std::cout << command << " [-a] [-p] [-t <name> <message>] -m <message> | -P" << std::endl;
     std::cout << "\nOptions:" << std::endl;
     std::cout << "\t-a: Track all the files (git add .)." << std::endl;
     std::cout << "\t-p: Push after the commit." << std::endl;
@@ -57,14 +57,16 @@ int main(int argc, char *argv[])
 
     system(commit_command.c_str());
 
-    if (args.isSet("-p"))
-        system("git push");
-
     if (args.isSet("-t")) {
         std::string tag_name = args.getArgs()[args.getArgIndex("-t") + 1];
         std::string tag_message = args.getArgs()[args.getArgIndex("-t") + 2];
 
         system(("git tag -a " + tag_name + " -m \"" + tag_message + "\"").c_str());
+    }
+
+    if (args.isSet("-p")) {
+        system("git push");
+        system("git push --tags");
     }
     return 0;
 }
