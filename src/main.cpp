@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
 
     if (args.isSet("-P")) {
         system("git push");
+        system("git push --tags");
         return 0;
     }
 
@@ -64,7 +65,6 @@ int main(int argc, char *argv[])
         std::string tag_message = args.getArgs()[args.getArgIndex("-t") + 2];
 
         system(("git tag -a " + tag_name + " -m \"" + tag_message + "\"").c_str());
-        system("git push --tags");
     }
     return 0;
 }
