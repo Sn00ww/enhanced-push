@@ -4,12 +4,13 @@
 void printHelp(char *command)
 {
     std::cout << "Usage:" << std::endl;
-    std::cout << command << " -m <message> [-a] [-p]" << std::endl;
+    std::cout << command << "[-a] [-p] [-t <name> <message>] -m <message> | -P" << std::endl;
     std::cout << "\nOptions:" << std::endl;
-    std::cout << "\t-m <message>: Specify the commit message (not formatted)." << std::endl;
     std::cout << "\t-a: Track all the files (git add .)." << std::endl;
     std::cout << "\t-p: Push after the commit." << std::endl;
     std::cout << "\t-P: Push without commit." << std::endl;
+    std::cout << "\t-t <name> <message>: Specify an annotated tag." << std::endl;
+    std::cout << "\t-m <message>: Specify the commit message (not formatted)." << std::endl;
 }
 
 int main(int argc, char *argv[])
@@ -23,10 +24,14 @@ int main(int argc, char *argv[])
 
     if (args.isSet("-P")) {
         system("git push");
+        system("git push --tags");
         return 0;
     }
 
     if (!args.isSet("-m") || args.getArgIndex("-m") + 1 >= args.getArgc()) {
+        printHelp(argv[0]);
+        return 1;
+    } else if (args.isSet("-t") && (args.getArgIndex("-t") + 1 >= args.getArgc() || args.getArgIndex("-t") + 2 >= args.getArgc())) {
         printHelp(argv[0]);
         return 1;
     }
@@ -54,5 +59,12 @@ int main(int argc, char *argv[])
 
     if (args.isSet("-p"))
         system("git push");
+
+    if (args.isSet("-t")) {
+        std::string tag_name = args.getArgs()[args.getArgIndex("-t") + 1];
+        std::string tag_message = args.getArgs()[args.getArgIndex("-t") + 2];
+
+        system(("git tag -a " + tag_name + " -m \"" + tag_message + "\"").c_str());
+    }
     return 0;
 }
