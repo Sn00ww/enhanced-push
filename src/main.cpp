@@ -10,8 +10,6 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    system("git status");
-
     std::string message = args.getArgs()[args.getArgIndex("-m") + 1];
     FILE* output = popen("git branch -ra | grep \"^*\" | sed -e 's/* //g'", "r");
     std::string branch;
@@ -26,6 +24,8 @@ int main(int argc, char *argv[])
 
     if (args.isSet("-a"))
         system("git add .");
+
+    system("git status");
 
     std::string commit_command = "git commit -m \"["+ branch +"] => "+ message +"\"";
 
